@@ -1,25 +1,26 @@
-
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useFetch } from "../hooks/useFetch";
-
-
+import { MainHeader } from "../components/header/MainHeader";
 
 export const App = () => {
-
   const URL = `https://kokostore-express.onrender.com/products`;
+  const [products, setProducts] = useState([]);
+  const [category, setcategory] = useState([]);
 
-  const [products, setProducts] = useState([])
+  const { data, isLoading } = useFetch(URL);
 
-  const {data,isLoading}  = useFetch(URL);
-
-
-
+  useEffect(() => {
+    if (data) {
+      setProducts(data.products);
+    }
+  }, [data]);
 
   return (
     <>
-      <h1>Información de Products</h1>
-      <hr />
-      {isLoading ? <p>Cargando...</p> : <pre>{ JSON.stringify(data, null,2) }</pre>}
+      <MainHeader />
+      <main>
+        
+      </main>
     </>
   );
 };
