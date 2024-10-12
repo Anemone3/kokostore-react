@@ -1,8 +1,9 @@
 import MenuIcon from "@/components/icons/MenuIcon";
 import { CartIcon } from "@/components/icons/CartIcon";
-import ProfilePicture from "@/assets/images/image-avatar.png";
 import { CloseIcon } from "../icons/CloseIcon";
 import { useState } from "react";
+
+const ProfilePicture = 'https://avatars.akamai.steamstatic.com/082ef5b418f2c0491ea318a18ea78012ed761899_full.jpg'
 
 export const MainHeader = () => {
   const [navClass, setNavClass] = useState(
@@ -11,7 +12,7 @@ export const MainHeader = () => {
 
   const handleOpenMenu = () => {
     setNavClass(
-      "absolute md:static left-0 top-0 flex  bg-gray-300  h-full w-3/4 flex-col gap-y-6 bg-gray-300 p-8 font-bold md:mr-auto md:flex md:flex-row md:gap-4",
+      "absolute md:static md:bg-white  left-0 top-0 flex  bg-gray-300  h-full w-3/4 flex-col gap-y-6 bg-gray-300 p-8 font-bold md:mr-auto md:flex md:flex-row md:gap-4",
     );
   };
 
@@ -35,9 +36,9 @@ export const MainHeader = () => {
         <a href="#">About</a>
       </nav>
 
-      <div className="flex place-items-center gap-5">
+      <div className="flex place-items-center gap-5 ">
         <CartIcon />
-        <img src={ProfilePicture} alt="profile user" className="w-10" />
+        <img src={ProfilePicture} alt="profile user" className="w-10 rounded-full" />
       </div>
     </header>
   );
