@@ -59,11 +59,16 @@ export const Sidebar = () => {
       {/* Profile */}
       <div className="flex flex-col items-center">
         <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-100">
-          <img
-            src={ProfilePicture}
-            alt="profile user"
-            className="h-9 w-9 cursor-pointer rounded-full text-gray-600"
-          />
+          <NavLink
+            key={'/profile'}
+            to={'profile'}
+          >
+            <img
+              src={ProfilePicture}
+              alt="profile user"
+              className="h-9 w-9 cursor-pointer rounded-full text-gray-600"
+            />
+          </NavLink>
         </div>
       </div>
     </div>

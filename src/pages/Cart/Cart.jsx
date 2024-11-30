@@ -35,7 +35,7 @@ export const Cart = () => {
 
   return (
     <div className="flex min-h-screen flex-col gap-6 bg-gray-100 p-6 lg:flex-row">
-      <div className="flex-1 rounded-lg bg-white p-6 shadow-md">
+      <div className="flex-1 rounded-lg bg-white p-6 shadow-md overflow-y-auto">
         <h2 className="mb-4 text-2xl font-semibold">Your Cart</h2>
 
         {cart.length > 0 ? (

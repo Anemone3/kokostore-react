@@ -3,20 +3,18 @@ import { useContext } from "react";
 
 import { typesCart } from "../../../context/typesCart";
 import { CartContext } from "../../../context/CartContext";
+import { NavLink } from "react-router-dom";
 
-
-export const ProductList = ({ product }) => {
+export const ProductList = ({ product, handleViewDetails }) => {
   const { dispatch } = useContext(CartContext);
-  const { titulo, descripcion, price, ingredientes, image_url } = product;
-
-    
+  const { id, titulo, descripcion, price, ingredientes, image_url } = product;
 
   const addToCart = (product) => {
-    console.log('Click add cart', {...product});
-    
+    console.log("Click add cart", { ...product });
+
     dispatch({
       type: typesCart.ADD_CART,
-      payload: {...product,quantity: 1},
+      payload: { ...product, quantity: 1 },
     });
   };
 
@@ -37,9 +35,13 @@ export const ProductList = ({ product }) => {
           <li>{ingredientes}</li>
         </ul>
         <div className="mt-auto flex w-full justify-between">
-          <button className="mr-3 w-full rounded-lg bg-pink-500 py-2 text-sm font-medium text-white transition-all duration-300 hover:scale-105 hover:bg-pink-600">
+          <button
+            onClick={() => handleViewDetails(id)}
+            className="mr-3 w-full rounded-lg bg-pink-500 py-2 text-sm font-medium text-white transition-all duration-300 hover:scale-105 hover:bg-pink-600"
+          >
             Show Details
           </button>
+
           <button
             onClick={() => addToCart(product)}
             className="flex w-3/12 items-center justify-center rounded-lg bg-pink-500 transition-all duration-300 hover:scale-105 hover:bg-pink-600"

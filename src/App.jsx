@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom";
-import { Navbar, Sidebar } from "./components";
+import { Sidebar } from "./components";
 import { CartProvider } from "./context/CartContext";
 
 export const App = () => {
@@ -9,7 +9,6 @@ export const App = () => {
         <div className="flex h-full flex-1 overflow-hidden">
           <Sidebar />
           <div className="flex flex-1 flex-col overflow-hidden">
-            <Navbar />
             <Outlet />
           </div>
         </div>
