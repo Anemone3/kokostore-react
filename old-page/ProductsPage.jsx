@@ -65,7 +65,7 @@
 //                   <div className="grid grid-cols-3 gap-4 h-full">
 //                 {products.map((product) => (
 //                   <ProductList key={product.id} {...product} />
-//                 ))}
+//                 ))}s
 //               </div>
 //             )}
 //           </section>
