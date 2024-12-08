@@ -87,7 +87,7 @@ export const Sidebar = () => {
             <Icon className="h-6 w-6" />
             {label === "Cart" && cart.length > 0 && (
               <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-pink-500 text-xs font-semibold text-white">
-                {cart.length}
+                {cart.reduce((total, item) => total + item.quantity, 0)}
               </span>
             )}
             <span className="absolute left-full ml-2 whitespace-nowrap rounded bg-gray-800 px-2 py-1 text-xs text-white opacity-0 transition-opacity duration-200 group-hover:opacity-100">
