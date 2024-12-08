@@ -11,6 +11,8 @@ export const useFetch = (url) => {
     error: null,
   });
 
+  
+
   useEffect(() => {
     getFetch();
   }, [url]);
@@ -52,6 +54,8 @@ export const useFetch = (url) => {
           message: resp.statusText,
         },
       });
+
+
 
       return;
     }

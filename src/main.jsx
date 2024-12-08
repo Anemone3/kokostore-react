@@ -6,6 +6,7 @@ import "./index.css";
 import { Cart, ErrorPage, Favorites, Product,  } from "./pages";
 import { ProfileUser } from "./pages/User/ProfileUser";
 import { ProductDetail } from "./pages/ProductDetail/ProductDetail";
+import { AuthComponent } from "./pages/User/AuthComponent/AuthComponent";
 
 const router = createBrowserRouter([
   {
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
       {
         path: "profile",
         element: <ProfileUser/>
+      },
+      {path: "login", 
+        element: <AuthComponent/>
+
       }
     ],
   },

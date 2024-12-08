@@ -33,7 +33,7 @@ export const Product = () => {
         <div className="flex flex-1 flex-col p-6">
           <div className="flex-1 overflow-hidden">
             {isLoading ? (
-              <Loading />
+              <Loading text={'Cargando Productos...'}/>
             ) : hasError ? (
               <ErrorMessage
                 message={error.message || "Error al cargar los productos"}

@@ -1,9 +1,8 @@
 import { Heart, ShoppingCart, TvMinimal } from "lucide-react";
-import { useContext } from "react";
-import { NavLink } from "react-router-dom";
+import { useContext, useEffect, useRef, useState } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
 import { CartContext } from "../context/CartContext";
-
-
+import { useUserAuth } from "../hooks/useUserAuth";
 
 const ProfilePicture =
   "https://avatars.akamai.steamstatic.com/082ef5b418f2c0491ea318a18ea78012ed761899_full.jpg";
@@ -11,6 +10,13 @@ const qwe =
   "https://www.equalityhumanrights.com/sites/default/files/styles/avatar_wide/public/2023/user-icon.webp?itok=h30--j4O";
 export const Sidebar = () => {
   const { cart } = useContext(CartContext);
+  const user = JSON.parse(localStorage.getItem("userData"));
+  const navigate = useNavigate(); // Para redirigir a otras páginas
+  const {logout} = useUserAuth();
+  const [isProfileMenuVisible, setIsProfileMenuVisible] = useState(false);
+  const profileMenuRef = useRef(null);
+  const userMenuRef = useRef(null);
+
   const navBarItems = [
     {
       icon: TvMinimal,
@@ -29,6 +35,40 @@ export const Sidebar = () => {
     },
   ];
 
+  // Detectar clic fuera del cuadro para cerrarlo
+  const handleClickOutside = (event) => {
+    if (
+      profileMenuRef.current &&
+      !profileMenuRef.current.contains(event.target) &&
+      !userMenuRef.current.contains(event.target)
+    ) {
+      setIsProfileMenuVisible(false);
+    }
+  };
+
+  // Añadir el evento global para clics fuera
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const toggleProfileMenu = () => {
+    setIsProfileMenuVisible((prev) => !prev);
+  };
+
+  const handleProfileOption = (option) => {
+    setIsProfileMenuVisible(false); // Cerrar el menú al hacer clic en una opción
+
+    if (option === "profile") {
+      navigate("/profile"); // Redirige a la página de perfil
+    } else if (option === "login") {
+      navigate("/login"); // Redirige a la página de login
+    } else if (option === "logout") {
+      logout();
+      window.location.reload(); // Redirige a la página de inicio
+    }
+  };
+
   return (
     <div className="flex w-16 flex-col justify-between border-r border-gray-200 bg-white py-4">
       <div className="flex flex-col items-center gap-3 space-y-4">
@@ -46,7 +86,7 @@ export const Sidebar = () => {
           >
             <Icon className="h-6 w-6" />
             {label === "Cart" && cart.length > 0 && (
-              <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-pink-500 text-white text-xs font-semibold">
+              <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-pink-500 text-xs font-semibold text-white">
                 {cart.length}
               </span>
             )}
@@ -56,20 +96,55 @@ export const Sidebar = () => {
           </NavLink>
         ))}
       </div>
+
       {/* Profile */}
       <div className="flex flex-col items-center">
         <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-100">
-          <NavLink
-            key={'/profile'}
-            to={'profile'}
-          >
-            <img
-              src={ProfilePicture}
-              alt="profile user"
-              className="h-9 w-9 cursor-pointer rounded-full text-gray-600"
-            />
-          </NavLink>
+          <img
+            src={user ? user.profile_url : ProfilePicture}
+            alt="profile user"
+            onClick={toggleProfileMenu} // Al hacer clic, mostrar el menú
+            className="h-9 w-9 cursor-pointer rounded-full text-gray-600"
+          />
         </div>
+
+        {/* Cuadro emergente de opciones */}
+        {isProfileMenuVisible && (
+          <div
+            ref={profileMenuRef}
+            className="absolute left-16 bottom-3.5 z-10  w-48 rounded-lg border border-gray-200 bg-white shadow-lg"
+          >
+            <ul>
+              <li>
+                <button
+                  onClick={() => handleProfileOption("profile")}
+                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-pink-100"
+                >
+                  Perfil
+                </button>
+              </li>
+              {!user ? (
+                <li>
+                  <button
+                    onClick={() => handleProfileOption("login")}
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-pink-100"
+                  >
+                    Iniciar sesión
+                  </button>
+                </li>
+              ) : (
+                <li>
+                  <button
+                    onClick={() => handleProfileOption("logout")}
+                    className="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-pink-100"
+                  >
+                    Cerrar sesión
+                  </button>
+                </li>
+              )}
+            </ul>
+          </div>
+        )}
       </div>
     </div>
   );
