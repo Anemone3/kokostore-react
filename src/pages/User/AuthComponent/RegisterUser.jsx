@@ -1,7 +1,11 @@
-import { use } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "../../../hooks/useForm";
+import { departamentosPeru } from "./departamentos";
+import { useNavigate } from "react-router-dom";
 
-export const RegisterUser = ({ setSelectedTab, register, login }) => {
+export const RegisterUser = ({ userAuth, setSelectedTab, register, login }) => {
+  const [profilePicture, setProfilePicture] = useState(null);
+  const navigate = useNavigate();
   const {
     formState,
     onInputChange,
@@ -38,18 +42,32 @@ export const RegisterUser = ({ setSelectedTab, register, login }) => {
       alert("Por favor, completa todos los campos.");
       return;
     }
-    const data = await register(
-      firstname,
-      lastname,
-      correo,
-      telefono,
-      direccion,
-      password,
-    );
 
-    await login(correo, password);
+    const formData = new FormData();
+    formData.append("firstname", firstname);
+    formData.append("lastname", lastname);
+    formData.append("correo", correo);
+    formData.append("telefono", telefono);
+    formData.append("direccion", direccion);
+    formData.append("password", password);
+    formData.append("departamento", departamento);
+
+    if (profilePicture) {
+      formData.append("file", profilePicture);
+    }
+
+    await register(formData);
+    console.log("Que es esto: ", !userAuth.error, "y esto: ", userAuth.error);
+
+    if (!userAuth.error) {
+      await login(correo, password);
+      if (userAuth.isLogged) {
+        navigate("/profile");
+      }
+    }
+
     onResetForm();
-    console.log("Registro completado", data);
+    setProfilePicture(null);
   };
 
   return (
@@ -58,7 +76,7 @@ export const RegisterUser = ({ setSelectedTab, register, login }) => {
         <h2 className="mb-6 text-center text-2xl font-semibold text-gray-800">
           Register
         </h2>
-        <form className="w-full" onSubmit={handleRegister}>
+        <form className="w-full" onSubmit={handleRegister} autoComplete="off">
           <div className="mb-4 flex space-x-4">
             <div className="w-1/2">
               <label
@@ -166,11 +184,11 @@ export const RegisterUser = ({ setSelectedTab, register, login }) => {
               className="w-full rounded-md border border-pink-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-pink-300"
             >
               <option value="">Seleccione un departamento</option>
-              <option value="1">Departamento 1</option>
-              <option value="2">Departamento 2</option>
-              <option value="13">Lima</option>
-              <option value="dep4">Departamento 4</option>
-              {/* Puedes agregar más departamentos aquí */}
+              {departamentosPeru.map((departamento) => (
+                <option key={departamento} value={departamento}>
+                  {departamento}
+                </option>
+              ))}
             </select>
           </div>
 
@@ -192,6 +210,27 @@ export const RegisterUser = ({ setSelectedTab, register, login }) => {
             />
           </div>
 
+          {/* Campo para imagen */}
+          <div className="mb-6">
+            <label
+              htmlFor="profilePicture"
+              className="block text-sm font-medium text-gray-600"
+            >
+              Profile Picture
+            </label>
+            <input
+              type="file"
+              id="profilePicture"
+              accept="image/*"
+              onChange={(e) => setProfilePicture(e.target.files[0])}
+              className="w-full rounded-md border border-pink-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-pink-300"
+            />
+          </div>
+          {
+            <div className="mb-4 text-right text-sm text-pink-800">
+              {userAuth && userAuth?.error}
+            </div>
+          }
           <button
             type="submit"
             className="w-full rounded-md bg-pink-300 py-2 text-white hover:bg-pink-400 focus:outline-none focus:ring-2 focus:ring-pink-300"

@@ -1,11 +1,12 @@
 import { useAuth } from "../../context/AuthContext/AuthProvider";
 import { Loading } from "../../components/Loading";
+
 export const ProfileUser = () => {
   const { user } = useAuth();
 
-  // Verificar si el usuario existe
+
   if (!user) {
-    return (<Loading text={'Cargando'}/>); // Mostrar un mensaje mientras el usuario no esté disponible
+    return <Loading text={"Cargando"} />; // Mostrar un mensaje mientras el usuario no esté disponible
   }
 
   const {
@@ -25,7 +26,7 @@ export const ProfileUser = () => {
 
   // Función para formatear fecha
   const formatDate = (date) => {
-    return date.split('T')[0]; // Devuelve la fecha en formato 'YYYY-MM-DD'
+    return date.split("T")[0]; // Devuelve la fecha en formato 'YYYY-MM-DD'
   };
 
   return (
@@ -42,7 +43,10 @@ export const ProfileUser = () => {
           <div className="relative">
             {/* Foto de perfil */}
             <img
-              src={profile_url || "https://avatars.akamai.steamstatic.com/082ef5b418f2c0491ea318a18ea78012ed761899_full.jpg"}
+              src={
+                profile_url ||
+                "https://avatars.akamai.steamstatic.com/082ef5b418f2c0491ea318a18ea78012ed761899_full.jpg"
+              }
               alt="Profile"
               className="h-32 w-32 rounded-full border-4 border-white object-cover shadow-xl"
             />
@@ -70,7 +74,7 @@ export const ProfileUser = () => {
             <h2 className="text-xl font-semibold text-gray-900">
               {firstname + " " + lastname}
             </h2>
-            <p className="text-sm text-gray-600">@{correo.split('@')[0]}</p>
+            <p className="text-sm text-gray-600">@{correo.split("@")[0]}</p>
 
             {/* Estadísticas */}
             <div className="mt-4 flex justify-center space-x-8">
@@ -101,7 +105,8 @@ export const ProfileUser = () => {
             {/* Biografía */}
             <div className="mt-5 text-center text-gray-700">
               <p>
-                Miembro desde: {formatDate(created_at)}<br />
+                Miembro desde: {formatDate(created_at)}
+                <br />
                 Teléfono: {telefono}
               </p>
             </div>
@@ -113,7 +118,10 @@ export const ProfileUser = () => {
           <h2 className="mb-4 text-2xl font-semibold text-gray-900">Videos</h2>
           <div className="grid grid-cols-3 gap-4">
             {["video1", "video2", "video3"].map((video, index) => (
-              <div className="relative h-64 w-full overflow-hidden rounded-lg bg-gray-300" key={index}>
+              <div
+                className="relative h-64 w-full overflow-hidden rounded-lg bg-gray-300"
+                key={index}
+              >
                 <img
                   src={`https://via.placeholder.com/300x200?text=Video+${index + 1}`}
                   alt={`Video ${index + 1}`}
@@ -143,4 +151,3 @@ export const ProfileUser = () => {
     </div>
   );
 };
-

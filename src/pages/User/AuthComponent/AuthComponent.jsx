@@ -27,7 +27,7 @@ export const AuthComponent = () => {
         {selectedTab ? (
           <LoginUser login={login} userAuth={userAuth} setSelectedTab={setSelectedTab} />
         ) : (
-            <RegisterUser setSelectedTab={setSelectedTab} login={login} register={register}/>
+            <RegisterUser userAuth={userAuth} setSelectedTab={setSelectedTab} login={login} register={register}/>
         )}
       </div>
 

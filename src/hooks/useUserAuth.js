@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const url_login = "https://kokostore-express.onrender.com/users/login";
 const url_register = "https://kokostore-express.onrender.com/users/register";
@@ -6,6 +7,8 @@ const url_register = "https://kokostore-express.onrender.com/users/register";
 const url_getUser = "https://kokostore-express.onrender.com/users/";
 
 export const useUserAuth = () => {
+  const navigate = useNavigate();
+
   const [userAuth, setUserAuth] = useState({
     isLogged: false,
     token: null,
@@ -17,12 +20,12 @@ export const useUserAuth = () => {
   useEffect(() => {
     const token = localStorage.getItem("auth_token");
     const userData = JSON.parse(localStorage.getItem("userData"));
-    
+
     if (token && userData) {
       setUserAuth({
-        isLoggedIn: true,
+        isLogged: true,
         token: token,
-        userData: userData,
+        dataUser: userData,
         id: userData.supabase_user_id,
         error: null,
       });
@@ -56,8 +59,10 @@ export const useUserAuth = () => {
 
         localStorage.setItem("auth_token", access_token);
 
+        console.log(`id supabase: ${id}`);
+
         setUserAuth({
-          isLogged: false,
+          isLogged: true,
           token: access_token,
           dataUser: null,
           id: id,
@@ -80,48 +85,42 @@ export const useUserAuth = () => {
     }
   }, []);
 
-  const register = useCallback(
-    async (firstname, lastname, correo, telefono, direccion, password) => {
-      try {
-        const response = await fetch(url_register, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            firstname,
-            lastname,
-            correo,
-            telefono,
-            direccion,
-            password,
-          }),
+  const register = useCallback(async (formData) => {
+    try {
+      const response = await fetch(url_register, {
+        method: "POST",
+        body: formData,
+      });
+      const data = await response.json();
+      if (response.status === 201) {
+        console.log("respuesta del registro: ", data);
+        const { user } = data;
+        setUserAuth({
+          isLogged: false,
+          token: null,
+          id: user.id,
+          dataUser: null,
+          error: null,
         });
-
-        if (response.status === 201) {
-          const data = await response.json();
-          console.log("respuesta del registro: ", data);
-
-          const { user } = data;
-          setUserAuth({
-            isLogged: false,
-            token: null,
-            id: user.id,
-            dataUser: null,
-            error: null,
-          });
-          return user;
-        } else {
-          return null;
-        }
-      } catch (error) {
-        setUserAuth((prevState) => ({
-          ...prevState,
-          error: "Error al registrarse.",
-        }));
-        console.log(`Error al registrar: ${error}`);
       }
-    },
-    [],
-  );
+      if (response.status === 400) {
+         console.log("respuesta register, error 400: ", data);
+        setUserAuth({
+          isLogged: false,
+          token: null,
+          id: null,
+          dataUser: null,
+          error: data.error,
+        });
+      }
+    } catch (error) {
+      setUserAuth((prevState) => ({
+        ...prevState,
+        error: "Error al registrarse.",
+      }));
+      console.log(`Error al registrar: ${error}`);
+    }
+  }, []);
 
   const logout = useCallback(() => {
     localStorage.removeItem("auth_token");
@@ -133,6 +132,8 @@ export const useUserAuth = () => {
       dataUser: null,
       error: null,
     });
+
+    navigate("/");
   }, []);
 
   const fetchUser = async () => {
@@ -149,9 +150,13 @@ export const useUserAuth = () => {
       );
 
       const data = await response.json();
-      console.log("respuesta del get user: ", data);
+      console.log(
+        `respuesta del get user: Token usado ${userAuth.token} con el id: ${userAuth.id}`,
+        data,
+      );
 
       const { user } = data;
+      console.log("fetchUser:", user);
 
       if (response.ok) {
         localStorage.setItem("userData", JSON.stringify(user));
@@ -171,7 +176,9 @@ export const useUserAuth = () => {
         });
       }
     } catch (error) {
-      console.log(`Error al obtener los datos del usuario: ${(!userAuth.dataUser)}`);
+      console.log(
+        `Error al obtener los datos del usuario: ${!userAuth.dataUser}`,
+      );
       setUserAuth((prevState) => ({
         ...prevState,
         error: "Error al obtener los datos del usuario.",

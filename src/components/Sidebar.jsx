@@ -2,7 +2,7 @@ import { Heart, ShoppingCart, TvMinimal } from "lucide-react";
 import { useContext, useEffect, useRef, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { CartContext } from "../context/CartContext";
-import { useUserAuth } from "../hooks/useUserAuth";
+import { useAuth } from "../context/AuthContext/AuthProvider";
 
 const ProfilePicture =
   "https://avatars.akamai.steamstatic.com/082ef5b418f2c0491ea318a18ea78012ed761899_full.jpg";
@@ -10,9 +10,9 @@ const qwe =
   "https://www.equalityhumanrights.com/sites/default/files/styles/avatar_wide/public/2023/user-icon.webp?itok=h30--j4O";
 export const Sidebar = () => {
   const { cart } = useContext(CartContext);
-  const user = JSON.parse(localStorage.getItem("userData"));
+
   const navigate = useNavigate(); // Para redirigir a otras páginas
-  const {logout} = useUserAuth();
+  const {logout, user} = useAuth();
   const [isProfileMenuVisible, setIsProfileMenuVisible] = useState(false);
   const profileMenuRef = useRef(null);
   const userMenuRef = useRef(null);

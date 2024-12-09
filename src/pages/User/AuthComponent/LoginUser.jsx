@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "../../../hooks/useForm";
 import { Loader } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export const LoginUser = ({ login, setSelectedTab, userAuth }) => {
   const { formState, onInputChange, onResetForm, correo, password } = useForm({
@@ -9,6 +10,8 @@ export const LoginUser = ({ login, setSelectedTab, userAuth }) => {
   });
 
   const [isClicked, setIsClicked] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -28,6 +31,12 @@ export const LoginUser = ({ login, setSelectedTab, userAuth }) => {
       setIsClicked(false);
     }, 3000);
   };
+
+  useEffect(() => {
+    if (userAuth.isLogged) {
+      navigate("/profile");
+    }
+  }, [userAuth.isLogged, navigate]);
 
   return (
     <div className="mt-5 flex items-center justify-center">
@@ -73,7 +82,7 @@ export const LoginUser = ({ login, setSelectedTab, userAuth }) => {
           <button
             onClick={handleClicked}
             type="submit"
-            className="w-full  rounded-md bg-pink-300 py-2 text-white hover:bg-pink-400 focus:outline-none focus:ring-2 focus:ring-pink-300"
+            className="w-full rounded-md bg-pink-300 py-2 text-white hover:bg-pink-400 focus:outline-none focus:ring-2 focus:ring-pink-300"
           >
             {isClicked ? (
               <div className="flex items-center justify-center">
