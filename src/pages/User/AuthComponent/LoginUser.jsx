@@ -32,11 +32,11 @@ export const LoginUser = ({ login, setSelectedTab, userAuth }) => {
     }, 3000);
   };
 
-  useEffect(() => {
-    if (userAuth.isLogged) {
-      navigate("/profile");
-    }
-  }, [userAuth.isLogged, navigate]);
+  // useEffect(() => {
+  //   if (userAuth.isLogged) {
+  //     navigate("/profile");
+  //   }
+  // }, [userAuth.isLogged, navigate]);
 
   return (
     <div className="mt-5 flex items-center justify-center">

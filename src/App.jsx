@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 import { Sidebar } from "./components";
-import { CartProvider } from "./context/CartContext";
 import { AuthProvider } from "./context/AuthContext/AuthProvider";
+import { CartProvider } from "./context/CartContext/CartContext";
 
 export const App = () => {
   return (

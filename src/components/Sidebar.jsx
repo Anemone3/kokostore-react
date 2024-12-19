@@ -1,7 +1,7 @@
 import { Heart, ShoppingCart, TvMinimal } from "lucide-react";
 import { useContext, useEffect, useRef, useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
-import { CartContext } from "../context/CartContext";
+import { NavLink, useNavigate, useParams } from "react-router-dom";
+import { CartContext } from "../context/CartContext/CartContext";
 import { useAuth } from "../context/AuthContext/AuthProvider";
 
 const ProfilePicture =
@@ -12,7 +12,8 @@ export const Sidebar = () => {
   const { cart } = useContext(CartContext);
 
   const navigate = useNavigate(); // Para redirigir a otras páginas
-  const {logout, user} = useAuth();
+  const { logout, user } = useAuth();
+  const { supabase_id } = useParams();
   const [isProfileMenuVisible, setIsProfileMenuVisible] = useState(false);
   const profileMenuRef = useRef(null);
   const userMenuRef = useRef(null);
@@ -60,7 +61,7 @@ export const Sidebar = () => {
     setIsProfileMenuVisible(false); // Cerrar el menú al hacer clic en una opción
 
     if (option === "profile") {
-      navigate("/profile"); // Redirige a la página de perfil
+      navigate(`/profile/${user.supabase_user_id}`); // Redirige a la página de perfil
     } else if (option === "login") {
       navigate("/login"); // Redirige a la página de login
     } else if (option === "logout") {
@@ -112,7 +113,7 @@ export const Sidebar = () => {
         {isProfileMenuVisible && (
           <div
             ref={profileMenuRef}
-            className="absolute left-16 bottom-3.5 z-10  w-48 rounded-lg border border-gray-200 bg-white shadow-lg"
+            className="absolute bottom-3.5 left-16 z-10 w-48 rounded-lg border border-gray-200 bg-white shadow-lg"
           >
             <ul>
               <li>

@@ -3,10 +3,12 @@ import { createRoot } from "react-dom/client";
 import { App } from "./App";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
-import { Cart, ErrorPage, Favorites, Product,  } from "./pages";
+import { Cart, ErrorPage, Favorites, Product } from "./pages";
 import { ProfileUser } from "./pages/User/ProfileUser";
 import { ProductDetail } from "./pages/ProductDetail/ProductDetail";
 import { AuthComponent } from "./pages/User/AuthComponent/AuthComponent";
+import { ProtectedRoute } from "./helpers/ProtectedRoute/ProtectedRoute";
+import { ProtectedAuth } from "./helpers/ProtectedRoute/ProtectedAuth";
 
 const router = createBrowserRouter([
   {
@@ -16,11 +18,11 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Product />
+        element: <Product />,
       },
       {
         path: "product/:id",
-        element: <ProductDetail />
+        element: <ProductDetail />,
       },
       {
         path: "cart",
@@ -28,16 +30,30 @@ const router = createBrowserRouter([
       },
       {
         path: "favoritos",
-        element: <Favorites/>
+        element: <Favorites />,
       },
       {
         path: "profile",
-        element: <ProfileUser/>
+        element: (
+          <ProtectedRoute>
+            <ProfileUser />
+          </ProtectedRoute>
+        ),
+        children: [
+          {
+            path: ":idsupabase",
+            element: <ProfileUser />,
+          },
+        ],
       },
-      {path: "login", 
-        element: <AuthComponent/>
-
-      }
+      {
+        path: "login",
+        element: (
+          <ProtectedAuth>
+            <AuthComponent />
+          </ProtectedAuth>
+        ),
+      },
     ],
   },
 ]);

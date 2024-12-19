@@ -1,9 +1,18 @@
 import { useAuth } from "../../context/AuthContext/AuthProvider";
 import { Loading } from "../../components/Loading";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 export const ProfileUser = () => {
-  const { user } = useAuth();
+  const { userAuth,user } = useAuth();
 
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (userAuth.isLogged) {
+      navigate(`/profile/${user.supabase_user_id}`, { replace: true });
+    }
+  }, [navigate, user]);
 
   if (!user) {
     return <Loading text={"Cargando"} />; // Mostrar un mensaje mientras el usuario no esté disponible

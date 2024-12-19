@@ -1,16 +1,17 @@
 import { useContext } from "react";
 
 import { CartItem } from "./CartItem";
-import { CartContext } from "../../context/CartContext";
-import { typesCart } from "../../context/typesCart";
+import { CartContext } from "../../context/CartContext/CartContext";
 import { PaymentCart } from "./PaymentCart";
+import { typesCart } from "../../reducer/typesCart";
 
 export const Cart = () => {
   const { cart, dispatch, totalCart } = useContext(CartContext);
 
+
   const deleteToCart = (id) => {
-    console.log('borrando el id' + id);
-    
+    console.log("borrando el id" + id);
+
     dispatch({
       type: typesCart.DELETE_TO_CART,
       payload: id,
@@ -18,7 +19,7 @@ export const Cart = () => {
   };
 
   const increment = (id) => {
-    console.log('incrementando el id' + id);
+    console.log("incrementando el id" + id);
     dispatch({
       type: typesCart.INCREMENT_CART,
       payload: id,
@@ -26,29 +27,45 @@ export const Cart = () => {
   };
 
   const decremenet = (id) => {
-    console.log('decrementando el id' + id);
+    console.log("decrementando el id" + id);
     dispatch({
       type: typesCart.DECREMENT_CART,
       payload: id,
     });
   };
 
+  const clearCart = () => {
+    dispatch({
+      type: typesCart.CLEAR_CART,
+    });
+  };
+
   return (
     <div className="flex min-h-screen flex-col gap-6 bg-gray-100 p-6 lg:flex-row">
-      <div className="flex-1 rounded-lg bg-white p-6 shadow-md overflow-y-auto">
+      <div className="flex-1 overflow-y-auto rounded-lg bg-white p-6 shadow-md">
         <h2 className="mb-4 text-2xl font-semibold">Your Cart</h2>
 
         {cart.length > 0 ? (
           <ul className="space-y-4">
             {cart.map((producto) => (
-              <CartItem key={producto.id} product={producto} increment={increment} decremenet={decremenet} deleteToCart={deleteToCart}/>
+              <CartItem
+                key={producto.id}
+                product={producto}
+                increment={increment}
+                decremenet={decremenet}
+                deleteToCart={deleteToCart}
+              />
             ))}
           </ul>
         ) : (
           <p className="text-gray-500">Your cart is empty.</p>
         )}
       </div>
-        <PaymentCart total={totalCart}/>
+      <PaymentCart
+        total={totalCart}
+        cart={cart}
+        clearCart={clearCart}
+      />
     </div>
   );
 };

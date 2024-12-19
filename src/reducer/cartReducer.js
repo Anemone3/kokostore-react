@@ -1,7 +1,10 @@
+import { usePayment } from "../hooks/usePayment";
 import { typesCart } from "./typesCart";
 
-
 export const cartReducer = (state, action) => {
+
+
+
   //el type y payload que se envia con el dispatch
   const { type: actionType, payload: actionPayload } = action;
   switch (actionType) {
@@ -47,6 +50,13 @@ export const cartReducer = (state, action) => {
       return cart;
     }
     case typesCart.CLEAR_CART: {
+      return state = [];
+    }
+    case typesCart.PAYMENT_CART:{
+        /* 
+        Los reducers no deben encargarse de lógica asincrónica ni de llamadas a APIs.
+        El flujo de pago debe manejarse en un componente o en un contexto aparte
+        */
     }
     default:
       return state;

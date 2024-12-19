@@ -1,8 +1,7 @@
 import { ShoppingCartIcon } from "lucide-react";
 import { useContext } from "react";
-
-import { typesCart } from "../../../context/typesCart";
-import { CartContext } from "../../../context/CartContext";
+import { CartContext } from "../../../context/CartContext/CartContext";
+import { typesCart } from "../../../reducer/typesCart";
 import { NavLink } from "react-router-dom";
 
 export const ProductList = ({ product, handleViewDetails }) => {

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useForm } from "../../../hooks/useForm";
 import { departamentosPeru } from "./departamentos";
 import { useNavigate } from "react-router-dom";
@@ -7,7 +7,6 @@ export const RegisterUser = ({ userAuth, setSelectedTab, register, login }) => {
   const [profilePicture, setProfilePicture] = useState(null);
   const navigate = useNavigate();
   const {
-    formState,
     onInputChange,
     onResetForm,
     firstname,

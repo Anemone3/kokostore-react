@@ -68,6 +68,8 @@ export const useUserAuth = () => {
           id: id,
           error: null,
         });
+
+        navigate("/");
       } else {
         setUserAuth({
           dataUser: null,
@@ -104,7 +106,7 @@ export const useUserAuth = () => {
         });
       }
       if (response.status === 400) {
-         console.log("respuesta register, error 400: ", data);
+        console.log("respuesta register, error 400: ", data);
         setUserAuth({
           isLogged: false,
           token: null,
@@ -184,7 +186,16 @@ export const useUserAuth = () => {
         error: "Error al obtener los datos del usuario.",
       }));
     }
+
+
+
   };
+
+  const getToken = ()=>{
+    console.log('token: ',userAuth.token);
+    
+    return userAuth.token;
+  }
 
   return {
     user: userAuth.dataUser,
@@ -192,5 +203,6 @@ export const useUserAuth = () => {
     register: register,
     logout: logout,
     userAuth: userAuth,
+    getToken: getToken,
   };
 };
