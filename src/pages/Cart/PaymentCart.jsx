@@ -4,14 +4,19 @@ import { usePayment } from "../../hooks/usePayment";
 
 export const PaymentCart = ({ total, cart, clearCart }) => {
   const { user, logout } = useAuth();
-  const { isPaymentLoading, paymentResponse, paymentCartPaypal } = usePayment();
+  const { isPaymentLoading, paymentResponse,createPayment, paymentCartPaypal } = usePayment();
   const navigate = useNavigate();
+
   const handlePayment = () => {
     console.log("click en button compra");
 
-    paymentCartPaypal(cart, user.id)
-      .then((data) => {
+      paymentCartPaypal(cart, user.id)
+      .then(async (data) => {
         if (data) {
+          console.log({data});
+          localStorage.setItem("orderItem", JSON.stringify(data.order));
+          const response = await createPayment(data.order.id);
+          window.location.href = response.redirectUrl;
           clearCart();
         }
       })
@@ -19,8 +24,12 @@ export const PaymentCart = ({ total, cart, clearCart }) => {
         if (error) {
           logout();
           navigate("/login");
+
         }
       });
+
+      
+      
   };
 
   return (

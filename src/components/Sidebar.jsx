@@ -3,11 +3,9 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { CartContext } from "../context/CartContext/CartContext";
 import { useAuth } from "../context/AuthContext/AuthProvider";
+import defaultAvatar from "../assets/images/default_avatar.svg";
 
-const ProfilePicture =
-  "https://avatars.akamai.steamstatic.com/082ef5b418f2c0491ea318a18ea78012ed761899_full.jpg";
-const qwe =
-  "https://www.equalityhumanrights.com/sites/default/files/styles/avatar_wide/public/2023/user-icon.webp?itok=h30--j4O";
+
 export const Sidebar = () => {
   const { cart } = useContext(CartContext);
 
@@ -17,6 +15,7 @@ export const Sidebar = () => {
   const [isProfileMenuVisible, setIsProfileMenuVisible] = useState(false);
   const profileMenuRef = useRef(null);
   const userMenuRef = useRef(null);
+  const [imageProfile, setImageProfile] = useState(defaultAvatar)
 
   const navBarItems = [
     {
@@ -35,6 +34,15 @@ export const Sidebar = () => {
       label: "Favoritos",
     },
   ];
+
+  useEffect(()=>{
+    if(user){
+      setImageProfile(user.profile_url)
+    }else{
+      setImageProfile(defaultAvatar)
+    }
+  },[user])
+
 
   // Detectar clic fuera del cuadro para cerrarlo
   const handleClickOutside = (event) => {
@@ -61,12 +69,12 @@ export const Sidebar = () => {
     setIsProfileMenuVisible(false); // Cerrar el menú al hacer clic en una opción
 
     if (option === "profile") {
-      navigate(`/profile/${user.supabase_user_id}`); // Redirige a la página de perfil
+      navigate(`/profile/${user?.supabase_user_id}`);
     } else if (option === "login") {
-      navigate("/login"); // Redirige a la página de login
+      navigate("/login"); 
     } else if (option === "logout") {
       logout();
-      window.location.reload(); // Redirige a la página de inicio
+      window.location.reload(); 
     }
   };
 
@@ -88,7 +96,7 @@ export const Sidebar = () => {
             <Icon className="h-6 w-6" />
             {label === "Cart" && cart.length > 0 && (
               <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-pink-500 text-xs font-semibold text-white">
-                {cart.reduce((total, item) => total + item.quantity, 0)}
+                {cart.reduce((total, item) => total + Number(item.quantity), 0)}
               </span>
             )}
             <span className="absolute left-full ml-2 whitespace-nowrap rounded bg-gray-800 px-2 py-1 text-xs text-white opacity-0 transition-opacity duration-200 group-hover:opacity-100">
@@ -102,7 +110,7 @@ export const Sidebar = () => {
       <div className="flex flex-col items-center">
         <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-100">
           <img
-            src={user ? user.profile_url : ProfilePicture}
+            src={imageProfile}
             alt="profile user"
             onClick={toggleProfileMenu} // Al hacer clic, mostrar el menú
             className="h-9 w-9 cursor-pointer rounded-full text-gray-600"

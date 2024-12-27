@@ -9,7 +9,7 @@ export const ProfileUser = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (userAuth.isLogged) {
+    if (user) {
       navigate(`/profile/${user.supabase_user_id}`, { replace: true });
     }
   }, [navigate, user]);

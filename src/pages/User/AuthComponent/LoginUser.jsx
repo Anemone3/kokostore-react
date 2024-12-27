@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 export const LoginUser = ({ login, setSelectedTab, userAuth }) => {
   const { formState, onInputChange, onResetForm, correo, password } = useForm({
-    correo: "ateshi.baqua13@aquacrew.com",
+    correo: "",
     password: "",
   });
 

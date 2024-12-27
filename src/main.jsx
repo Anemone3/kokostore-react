@@ -9,6 +9,7 @@ import { ProductDetail } from "./pages/ProductDetail/ProductDetail";
 import { AuthComponent } from "./pages/User/AuthComponent/AuthComponent";
 import { ProtectedRoute } from "./helpers/ProtectedRoute/ProtectedRoute";
 import { ProtectedAuth } from "./helpers/ProtectedRoute/ProtectedAuth";
+import { PaymentSuccess } from "./pages/Cart/PaymentSuccess";
 
 const router = createBrowserRouter([
   {
@@ -28,6 +29,11 @@ const router = createBrowserRouter([
         path: "cart",
         element: <Cart />,
       },
+      {
+        path: "success",
+        element: <PaymentSuccess />,
+      },
+
       {
         path: "favoritos",
         element: <Favorites />,
@@ -61,5 +67,5 @@ const router = createBrowserRouter([
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <RouterProvider router={router} />
-  </StrictMode>,
+  </StrictMode>
 );

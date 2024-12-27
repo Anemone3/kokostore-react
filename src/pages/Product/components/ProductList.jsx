@@ -2,7 +2,6 @@ import { ShoppingCartIcon } from "lucide-react";
 import { useContext } from "react";
 import { CartContext } from "../../../context/CartContext/CartContext";
 import { typesCart } from "../../../reducer/typesCart";
-import { NavLink } from "react-router-dom";
 
 export const ProductList = ({ product, handleViewDetails }) => {
   const { dispatch } = useContext(CartContext);

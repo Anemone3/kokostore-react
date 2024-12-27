@@ -1,4 +1,3 @@
-import { usePayment } from "../hooks/usePayment";
 import { typesCart } from "./typesCart";
 
 export const cartReducer = (state, action) => {
@@ -10,19 +9,19 @@ export const cartReducer = (state, action) => {
   switch (actionType) {
     case typesCart.ADD_CART: {
       /* El actionPayload seria el payload que envie, osea mi producto */
-      const { id } = actionPayload;
+      const { id,quantity} = actionPayload;
       /* El state seria mi array cart */
       const productInCart = state.findIndex((item) => item.id === id);
 
       if (productInCart >= 0) {
         return state.map((item) =>
           item.id === id
-            ? { ...item, quantity: item.quantity + 1 } // Incrementa la cantidad
+            ? { ...item, quantity: Number(item.quantity) + Number(quantity) } 
             : item,
         );
       }
 
-      return [...state, { ...actionPayload, quantity: 1 }];
+      return [...state, { ...actionPayload   }];
     }
     case typesCart.DELETE_TO_CART: {
       const id = actionPayload;
