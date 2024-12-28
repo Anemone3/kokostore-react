@@ -11,7 +11,7 @@ export const Sidebar = () => {
 
   const navigate = useNavigate(); // Para redirigir a otras páginas
   const { logout, user } = useAuth();
-  const { supabase_id } = useParams();
+
   const [isProfileMenuVisible, setIsProfileMenuVisible] = useState(false);
   const profileMenuRef = useRef(null);
   const userMenuRef = useRef(null);
@@ -48,8 +48,7 @@ export const Sidebar = () => {
   const handleClickOutside = (event) => {
     if (
       profileMenuRef.current &&
-      !profileMenuRef.current.contains(event.target) &&
-      !userMenuRef.current.contains(event.target)
+      !profileMenuRef.current.contains(event.target)
     ) {
       setIsProfileMenuVisible(false);
     }
