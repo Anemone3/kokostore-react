@@ -56,9 +56,9 @@ export const RegisterUser = ({ userAuth, setSelectedTab, register, login }) => {
     }
 
     await register(formData);
-    console.log("Que es esto: ", !userAuth.error, "y esto: ", userAuth.error);
 
     if (!userAuth.error) {
+      console.log("login after register")
       await login(correo, password);
       if (userAuth.isLogged) {
         navigate("/profile");

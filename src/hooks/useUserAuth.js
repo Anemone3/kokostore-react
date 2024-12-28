@@ -59,7 +59,7 @@ export const useUserAuth = () => {
 
         localStorage.setItem("auth_token", access_token);
 
-        console.log(`id supabase: ${id}`);
+       
 
         setUserAuth({
           isLogged: true,
@@ -95,7 +95,6 @@ export const useUserAuth = () => {
       });
       const data = await response.json();
       if (response.status === 201) {
-        console.log("respuesta del registro: ", data);
         const { user } = data;
         setUserAuth({
           isLogged: false,
@@ -106,7 +105,6 @@ export const useUserAuth = () => {
         });
       }
       if (response.status === 400) {
-        console.log("respuesta register, error 400: ", data);
         setUserAuth({
           isLogged: false,
           token: null,
@@ -120,7 +118,7 @@ export const useUserAuth = () => {
         ...prevState,
         error: "Error al registrarse.",
       }));
-      console.log(`Error al registrar: ${error}`);
+
     }
   }, []);
 
@@ -152,13 +150,10 @@ export const useUserAuth = () => {
       );
 
       const data = await response.json();
-      console.log(
-        `respuesta del get user: Token usado ${userAuth.token} con el id: ${userAuth.id}`,
-        data,
-      );
+
 
       const { user } = data;
-      console.log("fetchUser:", user);
+
 
       if (response.ok) {
         localStorage.setItem("userData", JSON.stringify(user));
@@ -178,9 +173,7 @@ export const useUserAuth = () => {
         });
       }
     } catch (error) {
-      console.log(
-        `Error al obtener los datos del usuario: ${!userAuth.dataUser}`,
-      );
+
       setUserAuth((prevState) => ({
         ...prevState,
         error: "Error al obtener los datos del usuario.",
@@ -192,7 +185,7 @@ export const useUserAuth = () => {
   };
 
   const getToken = ()=>{
-    console.log('token: ',userAuth.token);
+    
     
     return userAuth.token;
   }

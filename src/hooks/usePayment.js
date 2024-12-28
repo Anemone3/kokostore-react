@@ -58,7 +58,6 @@ export const usePayment = () => {
           }
         })
         .catch((error) => {
-          console.error("Error al realizar el pago:", error);
           setPaymentResponse({
             error: error.message,
             data: null,
@@ -119,7 +118,6 @@ export const usePayment = () => {
 
       return response;
     } catch (error) {
-      console.error("Error al realizar el pago:", error);
       setPaymentResponse({
         error: error.message,
         data: null,

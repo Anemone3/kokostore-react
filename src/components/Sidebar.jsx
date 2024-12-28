@@ -42,7 +42,6 @@ export const Sidebar = () => {
     }
   }, [user]);
 
-  // Detectar clic fuera del cuadro para cerrarlo
   const handleClickOutside = (event) => {
     if (
       profileMenuRef.current &&
@@ -52,7 +51,6 @@ export const Sidebar = () => {
     }
   };
 
-  // Añadir el evento global para clics fuera
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
@@ -63,7 +61,7 @@ export const Sidebar = () => {
   };
 
   const handleProfileOption = (option) => {
-    setIsProfileMenuVisible(false); // Cerrar el menú al hacer clic en una opción
+    setIsProfileMenuVisible(false); 
 
     if (option === "profile") {
       navigate(`/profile/${user?.supabase_user_id}`);
