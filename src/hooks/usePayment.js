@@ -95,34 +95,27 @@ export const usePayment = () => {
     return data;
   };
 
-  const executePayment = async ({paymentId,token,payerId}) => {
-    
+  const executePayment = async (object) => {
 
-    const {id,monto_total} = JSON.parse(localStorage.getItem("orderItem"));
-    const userToken = localStorage.getItem("auth_token")
-    console.log(paymentId,token,payerId,id,monto_total);
+    const {paymentId, token, payerId,orderId ,total} = object;
+    const userToken = localStorage.getItem("auth_token");
+
 
     try {
-
-      if(!userToken || !paymentId){
-        throw new Error("User token faltante")
+      if (!userToken || !paymentId) {
+        throw new Error("User token faltante");
       }
 
       const response = await fetch(
-        `https://kokostore-express.onrender.com/payments/success/${id}?paymentId=${paymentId}&token=${token}&PayerID=${payerId}`,
+        `https://kokostore-express.onrender.com/payments/success/${orderId}?paymentId=${paymentId}&token=${token}&PayerID=${payerId}&total=${total}`,
         {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${userToken}`,
-            body: JSON.stringify({
-              total: monto_total,
-            }),
-          },
+          }
         }
       );
-
-
 
       return response;
     } catch (error) {

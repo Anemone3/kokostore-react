@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import {  useNavigate, useSearchParams } from "react-router-dom";
 import { usePayment } from "../../hooks/usePayment";
 
 export const PaymentSuccess = () => {
@@ -12,24 +12,28 @@ export const PaymentSuccess = () => {
 
   const { executePayment } = usePayment();
 
+  const storageItem = JSON.parse(localStorage.getItem("orderItem"))
+
   const objectPayment = {
     paymentId,
-    payerId,
     token,
+    payerId,
+    orderId: storageItem.id,
+    total: storageItem.monto_total,
   };
 
-  console.log("objeto xd", objectPayment );
 
   const restPaypal = async () => {
-    const prueba = await executePayment(objectPayment);
-    console.log(prueba);
-    
+    const response = await executePayment(objectPayment);
+    if (response.ok){
+      localStorage.removeItem("orderItem")
+    }
   };
 
   useEffect(() => {
     if (paymentId && payerId) {
       restPaypal();
-      setCompleted(true)
+      setCompleted(true);
     }
   }, [payerId, paymentId]);
 

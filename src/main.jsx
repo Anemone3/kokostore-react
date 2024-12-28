@@ -10,6 +10,7 @@ import { AuthComponent } from "./pages/User/AuthComponent/AuthComponent";
 import { ProtectedRoute } from "./helpers/ProtectedRoute/ProtectedRoute";
 import { ProtectedAuth } from "./helpers/ProtectedRoute/ProtectedAuth";
 import { PaymentSuccess } from "./pages/Cart/PaymentSuccess";
+import { ProtectedPayment } from "./helpers/ProtectedRoute/ProtectedPayment";
 
 const router = createBrowserRouter([
   {
@@ -31,7 +32,11 @@ const router = createBrowserRouter([
       },
       {
         path: "success",
-        element: <PaymentSuccess />,
+        element: (
+          <ProtectedPayment>
+            <PaymentSuccess />
+          </ProtectedPayment>
+        ),
       },
 
       {
