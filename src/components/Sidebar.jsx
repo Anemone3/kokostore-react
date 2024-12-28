@@ -5,7 +5,6 @@ import { CartContext } from "../context/CartContext/CartContext";
 import { useAuth } from "../context/AuthContext/AuthProvider";
 import defaultAvatar from "../assets/images/default_avatar.svg";
 
-
 export const Sidebar = () => {
   const { cart } = useContext(CartContext);
 
@@ -15,7 +14,7 @@ export const Sidebar = () => {
   const [isProfileMenuVisible, setIsProfileMenuVisible] = useState(false);
   const profileMenuRef = useRef(null);
   const userMenuRef = useRef(null);
-  const [imageProfile, setImageProfile] = useState(defaultAvatar)
+  const [imageProfile, setImageProfile] = useState(defaultAvatar);
 
   const navBarItems = [
     {
@@ -35,14 +34,13 @@ export const Sidebar = () => {
     },
   ];
 
-  useEffect(()=>{
-    if(user){
-      setImageProfile(user.profile_url)
-    }else{
-      setImageProfile(defaultAvatar)
+  useEffect(() => {
+    if (user) {
+      setImageProfile(user.profile_url);
+    } else {
+      setImageProfile(defaultAvatar);
     }
-  },[user])
-
+  }, [user]);
 
   // Detectar clic fuera del cuadro para cerrarlo
   const handleClickOutside = (event) => {
@@ -70,10 +68,10 @@ export const Sidebar = () => {
     if (option === "profile") {
       navigate(`/profile/${user?.supabase_user_id}`);
     } else if (option === "login") {
-      navigate("/login"); 
+      navigate("/login");
     } else if (option === "logout") {
       logout();
-      window.location.reload(); 
+      window.location.reload();
     }
   };
 

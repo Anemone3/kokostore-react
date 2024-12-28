@@ -4,32 +4,37 @@ import { usePayment } from "../../hooks/usePayment";
 
 export const PaymentCart = ({ total, cart, clearCart }) => {
   const { user, logout } = useAuth();
-  const { isPaymentLoading, paymentResponse,createPayment, paymentCartPaypal } = usePayment();
+  const {
+    isPaymentLoading,
+    paymentResponse,
+    createPayment,
+    paymentCartPaypal,
+  } = usePayment();
   const navigate = useNavigate();
 
-  const handlePayment = () => {
+  const handlePayment = async () => {
     console.log("click en button compra");
 
+    if (user === null) {
+      navigate("/login");
+    } else {
       paymentCartPaypal(cart, user.id)
-      .then(async (data) => {
-        if (data) {
-          console.log({data});
-          localStorage.setItem("orderItem", JSON.stringify(data.order));
-          const response = await createPayment(data.order.id);
-          window.location.href = response.redirectUrl;
-          clearCart();
-        }
-      })
-      .catch((error) => {
-        if (error) {
-          logout();
-          navigate("/login");
-
-        }
-      });
-
-      
-      
+        .then(async (data) => {
+          if (data) {
+            console.log({ data });
+            localStorage.setItem("orderItem", JSON.stringify(data.order));
+            const response = await createPayment(data.order.id);
+            window.location.href = response.redirectUrl;
+            clearCart();
+          }
+        })
+        .catch((error) => {
+          if (error) {
+            logout();
+            navigate("/login");
+          }
+        });
+    }
   };
 
   return (
